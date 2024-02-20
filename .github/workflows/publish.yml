@@ -17,5 +17,5 @@ jobs:
       - name: Build the image
         run: |
           pip install ansible-builder
-          ansible-builder build --container-runtime=docker --containerfile-path=$GITHUB_WORKSPACE/Containerfile --tag ghcr.io/cidrblock/cidrblock-ee:latest
+          ansible-builder build --container-runtime=docker -f $GITHUB_WORKSPACE/Containerfile --tag ghcr.io/cidrblock/cidrblock-ee:latest
           docker push ghcr.io/cidrblock/cidrblock-ee:latest
