@@ -1,0 +1,21 @@
+name: publish
+on: [push]
+jobs:
+  publish-image:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build the image
+        run: |
+          pip install ansuble-builder
+          ansible-builder build --container-runtime=docker --containerfile-path=$GITHUB_WORKSPACE/Containerfile --tag ghcr.io/cidrblock/cidrblock-ee:latest
+          docker push ghcr.io/cidrblock/cidrblock-ee:latest
